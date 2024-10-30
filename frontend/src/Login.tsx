@@ -1,4 +1,3 @@
-// Login.tsx
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -26,10 +25,10 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post("http://localhost:3000/users", values);
-      console.log(response.data); // Imprimir la respuesta para depuración
+      console.log(response.data);
       if (response.status === 200) {
-        const { rol, token } = response.data.usuario; // Verifica que esto sea correcto
-        login(token);
+        const { rol, token, id } = response.data.usuario;
+        login(token, id);
         if (rol === 1) {
           navigate("/admin");
         } else {
@@ -41,6 +40,7 @@ const Login = () => {
       setError("Error al iniciar sesión");
     }
   };
+
   useEffect(() => {
     Focus.current?.focus();
   }, []);

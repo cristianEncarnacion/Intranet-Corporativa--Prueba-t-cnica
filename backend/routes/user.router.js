@@ -8,7 +8,7 @@ router.use(express.json());
 router.get("/", async (req, res) => {
   try {
     const result =
-      await sql.query`SELECT nombre_usuario, contraseña FROM usuarios`;
+      await sql.query`SELECT id,nombre_usuario, contraseña FROM usuarios`;
     res.json(result.recordset);
   } catch (err) {
     res.status(500).send(err.message);
@@ -20,7 +20,7 @@ router.post("/", async (req, res) => {
 
   try {
     const result = await sql.query`
-      SELECT nombre_usuario, contraseña, rol_id FROM usuarios WHERE nombre_usuario = ${nombre_usuario};
+      SELECT id, nombre_usuario, contraseña, rol_id FROM usuarios WHERE nombre_usuario = ${nombre_usuario};
     `;
 
     if (result.recordset.length > 0) {
@@ -30,6 +30,7 @@ router.post("/", async (req, res) => {
         return res.status(200).json({
           mensaje: "Usuario encontrado",
           usuario: {
+            id: user.id, // Agregar el ID del usuario
             nombre_usuario: user.nombre_usuario,
             rol: user.rol_id,
           },
@@ -41,6 +42,7 @@ router.post("/", async (req, res) => {
           return res.status(200).json({
             mensaje: "Usuario encontrado",
             usuario: {
+              id: user.id, // Agregar el ID del usuario
               nombre_usuario: user.nombre_usuario,
               rol: user.rol_id,
             },

@@ -1,47 +1,49 @@
-// Componente AsignacionesEmployee.tsx
+// AsignacionesEmployee.tsx
 
 import { useState, useEffect } from "react";
 import axios from "axios";
 import styles from "./components/styles/Asignaciones.module.css";
 import { LayoutEmpleado } from "./LayoutEmpleado";
+import { useAuth } from "./AuthContext"; // Importar el contexto de autenticación
 
 const AsignacionesEmployee = () => {
+  const { userId } = useAuth(); // Obtener el userId del contexto de autenticación
   const [asignaciones, setAsignaciones] = useState([]);
-  const [search, setSearch] = useState(""); // Estado para el valor de búsqueda
-  const [filteredAsignaciones, setFilteredAsignaciones] = useState([]); // Estado para las asignaciones filtradas
+  const [search, setSearch] = useState("");
 
   const getAsignaciones = async () => {
-    const response = await axios.get("http://localhost:3000/asignaciones");
-    setAsignaciones(response.data);
-    setFilteredAsignaciones(response.data); // Inicializar asignaciones filtradas
+    try {
+      const response = await axios.get(
+        `http://localhost:3000/asignaciones-employee/${userId}`
+      );
+      setAsignaciones(response.data);
+    } catch (err) {
+      console.error("Error al obtener las asignaciones", err);
+    }
   };
 
   useEffect(() => {
     getAsignaciones();
-  }, []);
+  }, [userId]);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearch(value);
 
-    // Filtrar asignaciones según la búsqueda por Asignación o Empleado
-    const filtered = asignaciones.filter(
-      (asignacion: { Asignacion: string; Empleado: string }) =>
-        asignacion.Asignacion.toLowerCase().includes(value.toLowerCase()) ||
-        asignacion.Empleado.toLowerCase().includes(value.toLowerCase())
+    const filtered = asignaciones.filter((asignacion: { Asignacion: string }) =>
+      asignacion.Asignacion.toLowerCase().includes(value.toLowerCase())
     );
-    setFilteredAsignaciones(filtered);
+    setAsignaciones(filtered);
   };
 
   return (
     <LayoutEmpleado>
       <div className={styles.container}>
-        <h1 className={styles.titulo}>Asignaciones</h1>
+        <h1 className={styles.titulo}>Mis Asignaciones</h1>
 
-        {/* Input de búsqueda */}
         <input
           type="text"
-          placeholder="Buscar asignación o empleado"
+          placeholder="Buscar asignación"
           value={search}
           onChange={handleSearch}
           className={styles.searchInput}
@@ -51,18 +53,18 @@ const AsignacionesEmployee = () => {
           <thead>
             <tr>
               <th>Asignación</th>
-              <th>Empleado</th>
+              <th>Fecha de Asignación</th>
             </tr>
           </thead>
           <tbody>
-            {filteredAsignaciones.map(
+            {asignaciones.map(
               (
-                y: { Asignacion: string; Empleado: string; id: number },
+                y: { Asignacion: string; fecha_asignacion: string; id: number },
                 index
               ) => (
                 <tr key={index} className={styles.row}>
                   <td>{y.Asignacion}</td>
-                  <td>{y.Empleado}</td>
+                  <td>{new Date(y.fecha_asignacion).toLocaleDateString()}</td>
                 </tr>
               )
             )}

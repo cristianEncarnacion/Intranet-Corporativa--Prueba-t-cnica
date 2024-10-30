@@ -5,6 +5,7 @@ import { IoHomeSharp } from "react-icons/io5";
 import { MdAssignment } from "react-icons/md";
 import { MdPeopleAlt } from "react-icons/md";
 import { CiLogout } from "react-icons/ci";
+import { CgProfile } from "react-icons/cg";
 
 type SidebarProps = {
   rol: number;
@@ -30,6 +31,11 @@ const Sidebar = ({ rol }: SidebarProps) => {
         path: "/asignacion-empleado",
         label: "Asignaciones",
         icon: <MdAssignment />,
+      },
+      {
+        path: "/perfil",
+        label: "Perfil",
+        icon: <CgProfile />,
       },
     ],
   };

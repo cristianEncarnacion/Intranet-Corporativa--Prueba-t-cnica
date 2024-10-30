@@ -5,6 +5,7 @@ import { CiMenuBurger, CiLogout } from "react-icons/ci";
 import { IoHomeSharp } from "react-icons/io5";
 import { MdPeopleAlt, MdAssignment } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import { CgProfile } from "react-icons/cg";
 
 type NavbarProps = {
   rol: number;
@@ -19,14 +20,12 @@ const Navbar = ({ rol }: NavbarProps) => {
     setIsModalOpen(!isModalOpen);
   };
 
-  // Define the type for menu items
   type MenuItem = {
     path: string;
     label: string;
     icon: JSX.Element;
   };
 
-  // Menú basado en roles
   const menuItems: { [key: number]: MenuItem[] } = {
     1: [
       { path: "/inicioAdmin", label: "Inicio", icon: <IoHomeSharp /> },
@@ -39,6 +38,11 @@ const Navbar = ({ rol }: NavbarProps) => {
         path: "/asignacion-empleado",
         label: "Asignaciones",
         icon: <MdAssignment />,
+      },
+      {
+        path: "/perfil",
+        label: "Perfil",
+        icon: <CgProfile />,
       },
     ],
   };

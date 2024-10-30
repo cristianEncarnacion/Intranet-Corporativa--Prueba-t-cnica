@@ -8,6 +8,7 @@ import PrivateRoute from "./PrivateRoute";
 import InicioEmployee from "./InicioEmployee";
 import AsignacionesEmployee from "./AsignacionesEmployee";
 import { AuthProvider } from "./AuthContext";
+import Perfil from "./Perfil";
 
 function App() {
   return (
@@ -38,6 +39,10 @@ function App() {
           <Route
             path="/asignacion-empleado"
             element={<PrivateRoute element={<AsignacionesEmployee />} />}
+          />
+          <Route
+            path="/perfil"
+            element={<PrivateRoute element={<Perfil />} />}
           />
         </Routes>
       </Router>
