@@ -82,3 +82,8 @@ JOIN
 -- Consultas para verificar contenido de las tablas
 SELECT * FROM Usuarios;
 SELECT * FROM Asignaciones;
+
+
+-- Agregar la columna de descripción a la tabla Usuarios
+ALTER TABLE Usuarios
+ADD descripcion VARCHAR(255) NOT NULL DEFAULT 'Sin descripción';
