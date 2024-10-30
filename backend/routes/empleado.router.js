@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { sql } = require("../db");
+const bcrypt = require("bcrypt");
 
 router.use(express.json());
 
@@ -40,9 +41,8 @@ router.post("/", async (req, res) => {
 
   try {
     const checkUser = await sql.query`
-          SELECT COUNT(*) AS count FROM Usuarios WHERE nombre_usuario = ${nombre_usuario};
-      `;
-
+      SELECT COUNT(*) AS count FROM Usuarios WHERE nombre_usuario = ${nombre_usuario};
+    `;
     if (checkUser.recordset[0].count > 0) {
       return res
         .status(400)
@@ -55,10 +55,13 @@ router.post("/", async (req, res) => {
         .json({ error: "La contraseña debe tener al menos 6 caracteres" });
     }
 
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(contrasena, saltRounds);
+
     const result = await sql.query`
-          INSERT INTO Usuarios (nombre_usuario, contraseña, departamento_id, rol_id, nombre_completo) 
-          VALUES (${nombre_usuario}, ${contrasena}, ${departamento}, ${rol}, ${nombre_completo});
-      `;
+      INSERT INTO Usuarios (nombre_usuario, contraseña, departamento_id, rol_id, nombre_completo) 
+      VALUES (${nombre_usuario}, ${hashedPassword}, ${departamento}, ${rol}, ${nombre_completo});
+    `;
 
     res.status(201).json({ message: "Empleado creado correctamente" });
   } catch (err) {

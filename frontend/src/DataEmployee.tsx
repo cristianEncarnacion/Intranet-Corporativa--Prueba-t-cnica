@@ -3,7 +3,7 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { LayoutAdmin } from "./LayoutAdmin";
-import styles from "./components/stylesComponents/DataEmployee.module.css";
+import styles from "./components/styles/DataEmployee.module.css";
 
 const DataEmployee = () => {
   const navigate = useNavigate();
@@ -16,6 +16,7 @@ const DataEmployee = () => {
 
   const [empleados, setEmpleados] = useState<Empleado[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
   const rowsToShow = 10;
 
   const getEmpleados = async () => {
@@ -66,12 +67,34 @@ const DataEmployee = () => {
     navigate("/addEmployee");
   };
 
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const filteredEmpleados = empleados.filter(
+    (empleado) =>
+      empleado.nombre_usuario
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase()) ||
+      empleado.nombre_departamento
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase())
+  );
+
   return (
     <LayoutAdmin>
       <h1 className={styles.titulo}>Empleados</h1>
       <button onClick={handleClick} className={styles.buttonAdd}>
         Agregar empleado
       </button>
+
+      <input
+        type="text"
+        placeholder="Buscar empleado..."
+        value={searchTerm}
+        onChange={handleSearch}
+        className={styles.inputSearch}
+      />
 
       {loading ? (
         <p>Cargando...</p>
@@ -86,7 +109,7 @@ const DataEmployee = () => {
             </tr>
           </thead>
           <tbody>
-            {empleados.slice(0, rowsToShow).map((empleado) => (
+            {filteredEmpleados.slice(0, rowsToShow).map((empleado) => (
               <tr key={empleado.id} className={styles.hover}>
                 <td className={styles.td}>{empleado.id}</td>
                 <td className={styles.td}>{empleado.nombre_usuario}</td>

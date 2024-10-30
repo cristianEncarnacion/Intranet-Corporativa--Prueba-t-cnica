@@ -3,7 +3,7 @@ import FormComponent from "./components/FormComponent";
 import { LayoutAdmin } from "./LayoutAdmin";
 import axios from "axios";
 import Swal from "sweetalert2";
-import stylesComponent from "./components/stylesComponents/FormEmployee.module.css";
+import stylesComponent from "./components/styles/FormEmployee.module.css";
 
 const FormEmployee = () => {
   const [values, setValues] = useState({

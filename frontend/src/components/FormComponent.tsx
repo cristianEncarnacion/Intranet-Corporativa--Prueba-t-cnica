@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./styles/FormComponent.module.css";
+import styles from "./stylesComponents/FormComponent.module.css";
 
 type Field = {
   type: string;
