@@ -28,7 +28,7 @@ const Navbar = ({ rol }: NavbarProps) => {
 
   const menuItems: { [key: number]: MenuItem[] } = {
     1: [
-      { path: "/inicioAdmin", label: "Inicio", icon: <IoHomeSharp /> },
+      { path: "/admin", label: "Inicio", icon: <IoHomeSharp /> },
       { path: "/empleados", label: "Empleados", icon: <MdPeopleAlt /> },
       { path: "/asignaciones", label: "Asignaciones", icon: <MdAssignment /> },
     ],
